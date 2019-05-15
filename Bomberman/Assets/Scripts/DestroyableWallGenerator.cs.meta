@@ -3,7 +3,9 @@ guid: c51cdda89bcd722408923e2c315429a4
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - normalWall: {instanceID: 0}
+  - destroyableWall: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
