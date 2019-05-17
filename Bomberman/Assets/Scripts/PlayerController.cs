@@ -4,33 +4,56 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject wall;
+    public enum Moves
+    {
+        up,down,left,right
+    }
+
+    public GameObject bombPF;
+
+    public float speed;
     Vector3 zMovement;
     Vector3 xMovement;
+    Rigidbody rig;
+    const int cantMoves = 4;
+    public bool[] move;
     void Start()
     {
+        speed = 200.0f * Time.deltaTime;
         zMovement = new Vector3(0, 0, 1);
         xMovement = new Vector3(1, 0, 0);
+        rig = GetComponent<Rigidbody>();
+        move = new bool[cantMoves];
+
+        for(int i=0;i<cantMoves;i++)
+        {
+            move[i] = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.UpArrow))
+        if(Input.GetKey(KeyCode.UpArrow) && move[(int)Moves.up])
         {
-            transform.position += zMovement * wall.transform.localScale.x;
+            transform.position += zMovement * speed;
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.DownArrow) && move[(int)Moves.down])
         {
-            transform.position += zMovement * -wall.transform.localScale.x;
+            transform.position += zMovement * -speed;
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow) && move[(int)Moves.left])
         {
-            transform.position += xMovement * -wall.transform.localScale.x;
+            transform.position += xMovement * -speed;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) && move[(int)Moves.right])
         {
-            transform.position += xMovement * wall.transform.localScale.x;
+            transform.position += xMovement * speed;
+        }
+        if(Input.GetKeyUp(KeyCode.Space)&&!BombBehaviour.GetInstanciated())
+        {
+            GameObject b = Instantiate(bombPF);
+            b.transform.position = transform.position;
         }
     }
 }

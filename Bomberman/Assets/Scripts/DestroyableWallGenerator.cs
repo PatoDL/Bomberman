@@ -30,7 +30,7 @@ public class DestroyableWallGenerator : MonoBehaviour
                     GameObject nw = Instantiate(destroyableWall);
                     
                     nw.transform.position = new Vector3(x * destroyableWall.transform.localScale.x + destroyableWall.transform.localScale.x / 2,
-                        destroyableWall.transform.localScale.y / 2, z * destroyableWall.transform.localScale.x + destroyableWall.transform.localScale.x / 2);
+                        destroyableWall.transform.localScale.y/2, z * destroyableWall.transform.localScale.x + destroyableWall.transform.localScale.x / 2);
                     destroyableWallsCount++;
                     nw.tag = "DestroyableWall";
                     nw.name = "DestroyableWall";
