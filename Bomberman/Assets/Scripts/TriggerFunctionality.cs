@@ -83,56 +83,62 @@ public class TriggerFunctionality : MonoBehaviour
                 }
             }
         }
-        
-        
 
-        //else if((paredes[0]==null && paredes[1]!=null) || (paredes[0] != null && paredes[1] == null))
-        //{
-        //    GameObject pared = new GameObject();
-        //    for(int i=0;i<cantParedes;i++)
-        //    {
-        //        if(paredes[i]!=null)
-        //        {
-        //            Destroy(pared.gameObject);
-        //            pared = paredes[i];
-        //            break;
-        //        }
-        //    }
 
-        //    if(this.gameObject.name == "ColliderZ")
-        //    {
-        //        if(pared.transform.position.z>ball.position.z)
-        //        {
-        //            if(ball.transform.position.z>pared.transform.position.z-pared.transform.localScale.z)
-        //            {
-        //                ball.position = new Vector3(ball.position.x, ball.position.y, pared.transform.position.z - pared.transform.localScale.z);
-        //                p.move[(int)PlayerController.Moves.up] = false;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (ball.transform.position.z < pared.transform.position.z + pared.transform.localScale.z)
-        //            {
-        //                ball.position = new Vector3(ball.position.x, ball.position.y, pared.transform.position.z + pared.transform.localScale.z);
-        //                p.move[(int)PlayerController.Moves.down] = false;
-        //            }
-        //        }
-        //    }
 
-        //    if (this.gameObject.name == "ColliderX")
-        //    {
-        //        if (pared.transform.position.x > ball.position.x)
-        //        {
-        //            ball.position = new Vector3(pared.transform.position.x - pared.transform.localScale.x, ball.position.y, ball.position.z);
-        //        }
-        //        else
-        //        {
-        //            ball.position = new Vector3(pared.transform.position.x + pared.transform.localScale.x, ball.position.y, ball.position.z);
-        //        }
-        //    }
-        //}
+        else if ((paredes[0] == null && paredes[1] != null) || (paredes[0] != null && paredes[1] == null))
+        {
+            GameObject pared = new GameObject();
+            for (int i = 0; i < cantParedes; i++)
+            {
+                if (paredes[i] != null)
+                {
+                    Destroy(pared.gameObject);
+                    pared = paredes[i];
+                    break;
+                }
+            }
 
-        mostrarParedes();
+            if (this.gameObject.name == "ColliderZ")
+            {
+                if (pared.transform.position.z > ball.position.z)
+                {
+                    if (ball.transform.position.z > pared.transform.position.z - pared.transform.localScale.z)
+                    {
+                        ball.position = new Vector3(ball.position.x, ball.position.y, pared.transform.position.z - pared.transform.localScale.z);
+                        p.move[(int)PlayerController.Moves.up] = false;
+                    }
+                }
+                else
+                {
+                    if (ball.transform.position.z < pared.transform.position.z + pared.transform.localScale.z)
+                    {
+                        ball.position = new Vector3(ball.position.x, ball.position.y, pared.transform.position.z + pared.transform.localScale.z);
+                        p.move[(int)PlayerController.Moves.down] = false;
+                    }
+                }
+            }
+
+            if (this.gameObject.name == "ColliderX")
+            {
+                if (pared.transform.position.x > ball.position.x)
+                {
+                    if (ball.transform.position.x > pared.transform.position.x - pared.transform.localScale.x)
+                    {
+                        ball.position = new Vector3(pared.transform.position.x - pared.transform.localScale.x, ball.position.y, ball.position.z);
+                        p.move[(int)PlayerController.Moves.right] = false;
+                    }
+                }
+                else
+                {
+                    if (ball.transform.position.x < pared.transform.position.x + pared.transform.localScale.x)
+                    {
+                        ball.position = new Vector3(pared.transform.position.x + pared.transform.localScale.x, ball.position.y, ball.position.z);
+                        p.move[(int)PlayerController.Moves.left] = false;
+                    }
+                }
+            }
+        }
     }
 
     GameObject paredEnCola;
@@ -170,31 +176,6 @@ public class TriggerFunctionality : MonoBehaviour
                 }
             }
         }
-
-        //else if (col.gameObject.name == "DestroyableWall")
-        //{
-        //    for(int i = 0;i<cantParedes;i++)
-        //    {
-        //        if(paredes[i]==null)
-        //        {
-        //            paredes[i] = col.gameObject;
-        //            col.gameObject.GetComponent<MeshRenderer>().material.color = Color.magenta;
-        //            break;
-        //        }
-        //    }
-        //}
-    }
-
-    private void OnTriggerStay(Collider col)
-    {
-        //for (int i = 0; i < cantParedes; i++)
-        //{
-        //    if (!paredes[i])
-        //    {
-        //        paredEnCola = col.gameObject;
-        //        break;
-        //    }
-        //}
     }
 
     private void OnTriggerExit(Collider col)
@@ -244,61 +225,6 @@ public class TriggerFunctionality : MonoBehaviour
                 ball.GetComponent<PlayerController>().move[(int)PlayerController.Moves.left] =true;
                 ball.GetComponent<PlayerController>().move[(int)PlayerController.Moves.right] = true;
             }
-        }
-
-        //else if (col.gameObject.name == "DestroyableWall")
-        //{
-        //    for (int i = 0; i < cantParedes; i++)
-        //    {
-        //        if (paredes[i])
-        //        {
-        //            if (paredes[i] == col.gameObject)
-        //            {
-        //                paredes[i] = null;
-        //                col.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
-        //                break;
-        //            }
-        //        }
-        //    }
-
-        //    if (this.gameObject.name == "ColliderZ")
-        //    {
-        //        if (col.transform.position.z > ball.position.z)
-        //        {
-        //            ball.GetComponent<PlayerController>().move[(int)PlayerController.Moves.up] = true;
-        //        }
-        //        else
-        //        {
-        //            ball.GetComponent<PlayerController>().move[(int)PlayerController.Moves.down] = true;
-        //        }
-        //    }
-
-        //}
-    }
-
-
-    void mostrarParedes()
-    {
-        if (paredes[0] && paredes[1])
-        {
-            //Debug.Log(name + "- ambas");
-        }
-        else if (!paredes[0] && !paredes[1])
-        {
-            
-            
-        }
-        else
-        {
-            for(int i=0;i<cantParedes;i++)
-            {
-                if(paredes[i])
-                {
-                    Debug.Log(name + "- una" + paredes[i].transform.position);
-                    break;
-                }
-            }
-            
         }
     }
 }

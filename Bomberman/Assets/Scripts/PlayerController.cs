@@ -37,23 +37,47 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKey(KeyCode.UpArrow) && move[(int)Moves.up])
         {
             transform.position += zMovement * speed;
+            manageXInput(false);
         }
         if (Input.GetKey(KeyCode.DownArrow) && move[(int)Moves.down])
         {
             transform.position += zMovement * -speed;
+            manageXInput(false);
         }
         if (Input.GetKey(KeyCode.LeftArrow) && move[(int)Moves.left])
         {
             transform.position += xMovement * -speed;
+            manageZInput(false);
         }
         if (Input.GetKey(KeyCode.RightArrow) && move[(int)Moves.right])
         {
             transform.position += xMovement * speed;
+            manageZInput(false);
         }
         if(Input.GetKeyUp(KeyCode.Space)&&!BombBehaviour.GetInstanciated())
         {
             GameObject b = Instantiate(bombPF);
             b.transform.position = transform.position;
         }
+        if(Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            manageZInput(true);
+        }
+        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            manageXInput(true);
+        }
+    }
+
+    void manageXInput(bool b)
+    {
+        move[(int)Moves.right] = b;
+        move[(int)Moves.left] = b;
+    }
+
+    void manageZInput(bool b)
+    {
+        move[(int)Moves.up] = b;
+        move[(int)Moves.down] = b;
     }
 }
