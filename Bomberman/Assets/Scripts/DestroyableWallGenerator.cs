@@ -25,8 +25,9 @@ public class DestroyableWallGenerator : MonoBehaviour
             {
                 int r = Random.Range(0, 10);
                 if ((x % 2 != 0 || (x % 2 == 0 && z % 2 != 0))
-                    && r > 7 && destroyableWallsCount < 100 && (x!=13 || z!=13))
+                    && r > 7 && destroyableWallsCount < 100 && (x!=13 || z!=14))
                 {
+                    Debug.Log(x + "-" + z);
                     GameObject nw = Instantiate(destroyableWall);
                     
                     nw.transform.position = new Vector3(x * destroyableWall.transform.localScale.x + destroyableWall.transform.localScale.x / 2,
