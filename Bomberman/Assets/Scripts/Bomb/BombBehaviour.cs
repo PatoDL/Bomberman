@@ -38,11 +38,10 @@ public class BombBehaviour : MonoBehaviour
 
     private void OnTriggerExit(Collider col)
     {
-        if(col.gameObject.name=="Sphere")
+        if(col.gameObject.name=="Player")
         {
             activeTimer = true;
             GetComponent<SphereCollider>().isTrigger = false;
-            gameObject.AddComponent<Rigidbody>();
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().isKinematic = true;
         }
@@ -51,12 +50,16 @@ public class BombBehaviour : MonoBehaviour
     void Explode()
     {
         GameObject e1 = Instantiate(explosionPF);
+        e1.name = "Explosion";
         e1.transform.position = new Vector3(transform.position.x - explosionPF.transform.localScale.x, transform.position.y, transform.position.z);
         GameObject e2 = Instantiate(explosionPF);
+        e2.name = "Explosion";
         e2.transform.position = new Vector3(transform.position.x + explosionPF.transform.localScale.x, transform.position.y, transform.position.z);
         GameObject e3 = Instantiate(explosionPF);
+        e3.name = "Explosion";
         e3.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - explosionPF.transform.localScale.z);
         GameObject e4 = Instantiate(explosionPF);
+        e4.name = "Explosion";
         e4.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + explosionPF.transform.localScale.z);
     }
 }

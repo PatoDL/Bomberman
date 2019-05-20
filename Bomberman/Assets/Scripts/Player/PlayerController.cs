@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody rig;
     const int cantMoves = 4;
     public bool[] move;
+    public int lives = 2;
     void Start()
     {
         speed = 200.0f * Time.deltaTime;
@@ -54,7 +55,7 @@ public class PlayerController : MonoBehaviour
             transform.position += xMovement * speed;
             manageZInput(false);
         }
-        if(Input.GetKeyUp(KeyCode.Space)&&!BombBehaviour.GetInstanciated())
+        if((Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Space))&&!BombBehaviour.GetInstanciated())
         {
             GameObject b = Instantiate(bombPF);
             b.transform.position = transform.position;
@@ -79,5 +80,13 @@ public class PlayerController : MonoBehaviour
     {
         move[(int)Moves.up] = b;
         move[(int)Moves.down] = b;
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if(col.gameObject.name=="Enemy")
+        {
+            lives--;
+        }
     }
 }
