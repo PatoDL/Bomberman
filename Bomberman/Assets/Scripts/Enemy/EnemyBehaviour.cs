@@ -13,6 +13,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     public EnemyData data;
     public GameObject explosionPF;
+    public bool randomize = false;
 
     public int wallCollisionX = 0;
     public int wallCollisionZ = 0;

@@ -22,14 +22,14 @@ public class TriggerFunctionality : MonoBehaviour
         
         p = par.GetComponent<PlayerController>();
 
+        if(par.name!="Player")
         enemyBeh = par.GetComponent<EnemyBehaviour>();
     }
-
-   
 
     void Update()
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
+
         if (paredes[0] && paredes[1])
         {
             if (paredes[0].gameObject.name == paredes[1].gameObject.name)
@@ -37,6 +37,9 @@ public class TriggerFunctionality : MonoBehaviour
                 if ((this.gameObject.name == "ColliderZ" && (Mathf.Abs(paredes[0].transform.position.z - paredes[1].transform.position.z) > paredes[0].transform.localScale.z * 2 / 3)) ||
                     (this.gameObject.name == "ColliderX" && (Mathf.Abs(paredes[0].transform.position.x - paredes[1].transform.position.x) > paredes[0].transform.localScale.x * 2 / 3)))
                 {
+                    if (par.name != "Player")
+                        enemyBeh.randomize = true;
+
                     if (paredes[0].transform.position.z == paredes[1].transform.position.z)
                     {
                         float distance0 = paredes[0].transform.position.x - par.position.x;
@@ -110,6 +113,9 @@ public class TriggerFunctionality : MonoBehaviour
 
         else if ((paredes[0] == null && paredes[1] != null) || (paredes[0] != null && paredes[1] == null))
         {
+            if (par.name != "Player")
+                enemyBeh.randomize = true;
+
             GameObject pared = new GameObject();
             for (int i = 0; i < cantParedes; i++)
             {
@@ -216,10 +222,14 @@ public class TriggerFunctionality : MonoBehaviour
 
                 if (enemyBeh.wallCollisionX == 0 && enemyBeh.wallCollisionZ == 0)
                 {
-                    enemyBeh.m = Random.Range(0, 3);
-                    while (enemyBeh.m == (int)lastCol)
+                    if (enemyBeh.randomize)
                     {
                         enemyBeh.m = Random.Range(0, 3);
+                        while (enemyBeh.m == (int)lastCol)
+                        {
+                            enemyBeh.m = Random.Range(0, 3);
+                        }
+                        enemyBeh.randomize = false;
                     }
                 }
                 else if (enemyBeh.wallCollisionX == 2 && enemyBeh.wallCollisionZ == 0)

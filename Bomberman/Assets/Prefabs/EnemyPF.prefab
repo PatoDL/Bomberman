@@ -43,7 +43,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 2}
+  m_Size: {x: 0.8, y: 1, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &9046835444580064691
 MonoBehaviour:
@@ -101,7 +101,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1, z: 1}
+  m_Size: {x: 2, y: 1, z: 0.8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8310656413685781168
 MonoBehaviour:
@@ -216,6 +216,8 @@ MonoBehaviour:
     move: 3
     speed: 100
     state: 0
+  explosionPF: {fileID: 0}
+  randomize: 0
   wallCollisionX: 0
   wallCollisionZ: 0
   m: 0
