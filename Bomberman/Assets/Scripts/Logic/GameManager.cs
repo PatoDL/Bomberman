@@ -3,52 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DVJ02.Clase03
+public class GameManager : MonoBehaviour
 {
-    public class GameManager : MonoBehaviour
+    public int Score;
+    bool finalDoor = false;
+
+    public Text enemyCountText;
+    PlayerController player;
+    public EnemySpawner eS;
+    public Text livesText;
+
+    private static GameManager instance;
+    public static GameManager Instance
     {
-        public int Score;
-        bool finalDoor = false;
+        get { return instance; }
+    }
 
-        public Text enemyCountText;
-        PlayerController player;
-        public EnemySpawner eS;
-        public Text livesText;
-
-        private static GameManager instance;
-        public static GameManager Get()
+    private void Awake()
+    {
+        if (!instance)
         {
-            return instance;
+            instance = this;
         }
-
-        private void Awake()
+        else
         {
-            if (!instance)
-            {
-                instance = this;
-            }
-            else
-            {
-                Destroy(instance);
-            }
-            DontDestroyOnLoad(this);
+            Destroy(this);
         }
+        DontDestroyOnLoad(instance);
+    }
 
-        void Start()
-        {
-            eS = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
-            player = GameObject.Find("Player").GetComponent<PlayerController>();
-        }
+    void Start()
+    {
+        Init();
+    }
 
-        void Update()
-        {
-            enemyCountText.text = "Enemy count: " + eS.cantEnemies;
-            livesText.text = "Lives: " + player.lives;
-        }
+    public void Init()
+    {
+        eS = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
+    }
 
-        public void AddScore(int score)
-        {
-            Score += score;
-        }
+    void Update()
+    {
+        enemyCountText.text = "Enemy count: " + eS.cantEnemies;
+        livesText.text = "Lives: " + player.lives;
+    }
+
+    public void AddScore(int score)
+    {
+        Score += score;
     }
 }
+
