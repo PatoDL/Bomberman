@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
                     score += eS.scoreToAdd;
                     eS.addScore = false;
                 }
-                if (eS.cantEnemies <= 0)
+                if (eS.cantEnemies <=0 && eS.cantEnemies ==eS.cantEnemiesToSpawn)
                 {
                     door.able = true;
                 }
