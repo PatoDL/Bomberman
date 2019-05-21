@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     Text scoreText;
     public bool gameOver = false;
     DoorBehaviour door;
-    Vector3 PlayerStartPosition;
 
     public bool changing = false;
 
@@ -47,11 +46,9 @@ public class GameManager : MonoBehaviour
         eS = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         door = GameObject.Find("ExitDoor").GetComponent<DoorBehaviour>();
-        PlayerStartPosition = player.transform.position;
         player.lives = 2;
         eS.cantEnemies = 0;
         score = 0;
-        player.transform.position = PlayerStartPosition;
     }
 
     void Update()
@@ -87,7 +84,7 @@ public class GameManager : MonoBehaviour
                         }
                         player.hittedByBomb = false;
                         player.hittedByEnemy = false;
-                        player.transform.position = PlayerStartPosition;
+                        player.transform.position = player.PlayerStartPosition;
                     }
                     else
                     {

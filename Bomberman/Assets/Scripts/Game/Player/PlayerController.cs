@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public GameObject bombPF;
     public GameManager explosionPF;
 
+    public Vector3 PlayerStartPosition;
+
     public float speed;
     Vector3 zMovement;
     Vector3 xMovement;
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        PlayerStartPosition = new Vector3(1350.1f, 63.03f, 1447.1f);
         speed = 200.0f * Time.deltaTime;
         zMovement = new Vector3(0, 0, 1);
         xMovement = new Vector3(1, 0, 0);
