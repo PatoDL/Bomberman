@@ -9,11 +9,14 @@ public class UIMenuCanvas : MonoBehaviour
 {
     GameObject canvas;
     Button PlayButton;
+    Button QuitButton;
     void Start()
     {
         canvas = GameObject.Find("Canvas");
         PlayButton = canvas.transform.Find("Panel").Find("PlayButton").GetComponent<Button>();
+        QuitButton = canvas.transform.Find("Panel").Find("QuitButton").GetComponent<Button>();
         PlayButton.onClick.AddListener(PlayGame);
+        QuitButton.onClick.AddListener(Quit);
 
         UILoadingScreen.Instance.SetVisible(false);
     }
@@ -27,5 +30,14 @@ public class UIMenuCanvas : MonoBehaviour
     {
         LoaderManager.Instance.LoadScene("Game");
         UILoadingScreen.Instance.SetVisible(true);
+    }
+
+    public static void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
     }
 }
