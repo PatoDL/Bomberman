@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public GameObject bombPF;
+    public GameManager explosionPF;
 
     public float speed;
     Vector3 zMovement;
@@ -18,6 +19,8 @@ public class PlayerController : MonoBehaviour
     const int cantMoves = 4;
     public bool[] move;
     public int lives = 2;
+
+    bool hittedByBomb = false;
     void Start()
     {
         speed = 200.0f * Time.deltaTime;
@@ -58,6 +61,7 @@ public class PlayerController : MonoBehaviour
         if((Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Space))&&!BombBehaviour.GetInstanciated())
         {
             GameObject b = Instantiate(bombPF);
+            b.name = "Bomb";
             b.transform.position = transform.position;
         }
         if(Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
@@ -67,6 +71,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))
         {
             manageXInput(true);
+        }
+        if(hittedByBomb)
+        {
+            lives--;
+            hittedByBomb = false;
         }
     }
 
@@ -84,9 +93,17 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.name=="Enemy")
+        if(col.gameObject.name=="Enemy" || col.gameObject.name=="Explosion")
         {
             lives--;
+        }
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.name == "Explosion")
+        {
+            hittedByBomb = true;
         }
     }
 }

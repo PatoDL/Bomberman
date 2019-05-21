@@ -8,7 +8,7 @@ public class BombPositionTrigger : MonoBehaviour
 
     void Start()
     {
-        bomb = GameObject.Find("BombPF(Clone)");
+        bomb = transform.parent.gameObject;
     }
 
     private void OnTriggerEnter(Collider col)

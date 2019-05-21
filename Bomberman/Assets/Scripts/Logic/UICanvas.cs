@@ -25,10 +25,6 @@ public class UICanvas : MonoBehaviour
 
     public void PlayGame()
     {
-        if (GameManager.Instance)
-        {
-            GameManager.Instance.Init();
-        }
         LoaderManager.Instance.LoadScene("Game");
         UILoadingScreen.Instance.SetVisible(true);
     }
