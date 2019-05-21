@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class UICanvas : MonoBehaviour
+public class UIMenuCanvas : MonoBehaviour
 {
     GameObject canvas;
     Button PlayButton;

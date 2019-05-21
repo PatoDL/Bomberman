@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,9 +14,11 @@ public class GameManager : MonoBehaviour
     PlayerController player;
     EnemySpawner eS;
     Text livesText;
-    bool gameOver = false;
+    public bool gameOver = false;
     GameObject door;
     Vector3 PlayerStartPosition;
+
+    public bool changing = false;
 
     private static GameManager instance;
     public static GameManager Instance
@@ -47,29 +50,75 @@ public class GameManager : MonoBehaviour
         eS = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         PlayerStartPosition = player.transform.position;
+        player.lives = 2;
+        eS.cantEnemies = 0;
+        player.transform.position = PlayerStartPosition;
+        gameOver = false;
     }
 
     void Update()
     {
-        if (timer == 3)
-            Init();
-
-        if (timer >= 4)
+        if (SceneManager.GetActiveScene().name == "Game")
         {
-            enemyCountText.text = "Enemy count: " + eS.cantEnemies;
-            livesText.text = "Lives: " + player.lives;
-            if (eS.cantEnemies <= 0)
+            if (timer == 3)
+                Init();
+
+            if (timer >= 4)
             {
-                finalDoor = true;
-                OpenDoor();
+                enemyCountText.text = "Enemy count: " + eS.cantEnemies;
+                livesText.text = "Lives: " + player.lives;
+                if (eS.cantEnemies <= 0)
+                {
+                    finalDoor = true;
+                    OpenDoor();
+                }
+                if (player.hittedByBomb || player.hittedByEnemy)
+                {
+                    if (player.lives > 0)
+                    {
+                        player.lives--;
+                        player.hittedByBomb = false;
+                        player.hittedByEnemy = false;
+                        player.transform.position = PlayerStartPosition;
+                    }
+                    else
+                    {
+                        gameOver = true;
+                    }
+                }
+                if (gameOver && !changing)
+                {
+                    //if(!LoaderManager.Instance)
+                    //{
+                    //    LoaderManager.Create();
+                    //}
+                    UILoadingScreen.Instance.SetVisible(true);
+                    LoaderManager.Instance.LoadScene("GameOver");
+                    changing = true;
+                }
+            }
+            timer++;
+        }
+        else if(SceneManager.GetActiveScene().name == "GameOver")
+        {
+            if(UIGameOverCanvas.playAgain && !changing)
+            {
+                UILoadingScreen.Instance.SetVisible(true);
+                LoaderManager.Instance.LoadScene("Game");
+                timer = 0;
+                changing = true;
             }
         }
-        timer++;
     }
 
     public void AddScore(int score)
     {
         Score += score;
+    }
+
+    public void ReInitPlayer()
+    {
+
     }
 
     void OpenDoor()

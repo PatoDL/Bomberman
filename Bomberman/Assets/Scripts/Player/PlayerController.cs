@@ -20,7 +20,9 @@ public class PlayerController : MonoBehaviour
     public bool[] move;
     public int lives = 2;
 
-    bool hittedByBomb = false;
+    public bool hittedByBomb = false;
+    public bool hittedByEnemy = false;
+
     void Start()
     {
         speed = 200.0f * Time.deltaTime;
@@ -72,11 +74,6 @@ public class PlayerController : MonoBehaviour
         {
             manageXInput(true);
         }
-        if(hittedByBomb)
-        {
-            lives--;
-            hittedByBomb = false;
-        }
     }
 
     void manageXInput(bool b)
@@ -93,15 +90,15 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.name=="Enemy" || col.gameObject.name=="Explosion")
+        if(col.gameObject.name=="Enemy" && !hittedByEnemy)
         {
-            lives--;
+            hittedByEnemy = true;
         }
     }
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.name == "Explosion")
+        if (col.gameObject.name == "Explosion" && !hittedByBomb)
         {
             hittedByBomb = true;
         }

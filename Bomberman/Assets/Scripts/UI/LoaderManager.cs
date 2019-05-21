@@ -12,6 +12,16 @@ public class LoaderManager : MonoBehaviour
 
     private void Awake()
     {
+        Init();
+    }
+
+    public static LoaderManager Instance
+    {
+        get { return instance; }
+    }
+
+    public void Init()
+    {
         if (instance != null)
         {
             Destroy(this);
@@ -21,9 +31,9 @@ public class LoaderManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public static LoaderManager Instance
+    public static void Create()
     {
-        get { return instance; }
+        instance = new LoaderManager();
     }
 
     public void LoadScene(string sceneName)
@@ -49,6 +59,8 @@ public class LoaderManager : MonoBehaviour
             if (loadingProgress >= 1)
             {
                 ao.allowSceneActivation = true;
+                if(scene=="GameOver" || SceneManager.GetActiveScene().name=="GameOver")
+                    GameManager.Instance.changing = false;
             }
 
             yield return null;
