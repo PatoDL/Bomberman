@@ -7,6 +7,8 @@ public class UIGameOverCanvas : MonoBehaviour
 {
     Button playAgainButton;
     Button quitButton;
+    public static Text score;
+    public static Text highScore;
     public static bool playAgain = false;
     void Start()
     {
@@ -14,6 +16,8 @@ public class UIGameOverCanvas : MonoBehaviour
         quitButton = transform.Find("Panel").Find("QuitButton").GetComponent<Button>();
         playAgainButton.onClick.AddListener(PlayAgain);
         quitButton.onClick.AddListener(UIMenuCanvas.Quit);
+        score = transform.Find("Panel").Find("Score").GetComponent<Text>();
+        highScore = transform.Find("Panel").Find("HighScore").GetComponent<Text>();
     }
 
     // Update is called once per frame

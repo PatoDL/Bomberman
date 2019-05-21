@@ -6,16 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public int Score;
-    bool finalDoor = false;
+    public int score;
     int timer = 0;
     GameObject canvas;
     Text enemyCountText;
     PlayerController player;
     EnemySpawner eS;
     Text livesText;
+    Text scoreText;
     public bool gameOver = false;
-    GameObject door;
+    DoorBehaviour door;
     Vector3 PlayerStartPosition;
 
     public bool changing = false;
@@ -37,23 +37,21 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
-    {
-       
-    }
-
     void Init()
     {
+        gameOver = false;
         canvas = GameObject.Find("Canvas");
         enemyCountText = canvas.transform.Find("EnemyCountText").GetComponent<Text>();
         livesText = canvas.transform.Find("LivesText").GetComponent<Text>();
+        scoreText = canvas.transform.Find("ScoreText").GetComponent<Text>();
         eS = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
+        door = GameObject.Find("ExitDoor").GetComponent<DoorBehaviour>();
         PlayerStartPosition = player.transform.position;
         player.lives = 2;
         eS.cantEnemies = 0;
+        score = 0;
         player.transform.position = PlayerStartPosition;
-        gameOver = false;
     }
 
     void Update()
@@ -67,16 +65,26 @@ public class GameManager : MonoBehaviour
             {
                 enemyCountText.text = "Enemy count: " + eS.cantEnemies;
                 livesText.text = "Lives: " + player.lives;
+                scoreText.text = "Score: " + score;
+                if(eS.addScore)
+                {
+                    score += eS.scoreToAdd;
+                    eS.addScore = false;
+                }
                 if (eS.cantEnemies <= 0)
                 {
-                    finalDoor = true;
-                    OpenDoor();
+                    door.able = true;
                 }
                 if (player.hittedByBomb || player.hittedByEnemy)
                 {
                     if (player.lives > 0)
                     {
                         player.lives--;
+                        score -= 50;
+                        if(score<0)
+                        {
+                            score = 0;
+                        }
                         player.hittedByBomb = false;
                         player.hittedByEnemy = false;
                         player.transform.position = PlayerStartPosition;
@@ -84,6 +92,24 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         gameOver = true;
+                    }
+                }
+                if (door.exit)
+                {
+                    gameOver = true;
+                }
+                if(gameOver)
+                {
+                    if(PlayerPrefs.HasKey("HighScore"))
+                    {
+                        if(score>PlayerPrefs.GetInt("HighScore"))
+                        {
+                            PlayerPrefs.SetInt("HighScore", score);
+                        }
+                    }
+                    else
+                    {
+                        PlayerPrefs.SetInt("HighScore", score);
                     }
                 }
                 if (gameOver && !changing)
@@ -101,8 +127,11 @@ public class GameManager : MonoBehaviour
         }
         else if(SceneManager.GetActiveScene().name == "GameOver")
         {
-            if(UIGameOverCanvas.playAgain && !changing)
+            UIGameOverCanvas.highScore.text = PlayerPrefs.GetInt("HighScore").ToString();
+            UIGameOverCanvas.score.text = score.ToString();
+            if (UIGameOverCanvas.playAgain && !changing)
             {
+                UIGameOverCanvas.playAgain = false;
                 UILoadingScreen.Instance.SetVisible(true);
                 LoaderManager.Instance.LoadScene("Game");
                 timer = 0;
@@ -110,20 +139,4 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    public void AddScore(int score)
-    {
-        Score += score;
-    }
-
-    public void ReInitPlayer()
-    {
-
-    }
-
-    void OpenDoor()
-    {
-
-    }
 }
-

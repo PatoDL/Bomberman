@@ -8,6 +8,8 @@ public class DestroyableWallGenerator : MonoBehaviour
     GameObject floor;
     GameObject destroyableWallsParent;
     public GameObject destroyableWall;
+    public GameObject DoorPF;
+    bool doorLocated = false;
 
     void Start()
     {
@@ -36,6 +38,13 @@ public class DestroyableWallGenerator : MonoBehaviour
                     nw.tag = "DestroyableWall";
                     nw.name = "DestroyableWall";
                     nw.transform.SetParent(destroyableWallsParent.transform);
+                    if(!doorLocated)
+                    {
+                        GameObject d = Instantiate(DoorPF);
+                        d.gameObject.name = "ExitDoor";
+                        d.transform.position = new Vector3(nw.transform.position.x, d.transform.localScale.y / 2, nw.transform.position.z);
+                        doorLocated = true;
+                    }
                 }
             }
         }

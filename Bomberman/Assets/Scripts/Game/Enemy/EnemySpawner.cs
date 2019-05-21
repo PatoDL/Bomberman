@@ -12,6 +12,9 @@ public class EnemySpawner : MonoBehaviour
     public int cantEnemiesToSpawn=1;
     public int cantEnemies = 0;
     float timer = 0f;
+    public bool addScore=false;
+    public int scoreToAdd = 50;
+
     void Start()
     {
         floor = GameObject.Find("FloorController").transform.Find("Floor").gameObject;
@@ -43,5 +46,6 @@ public class EnemySpawner : MonoBehaviour
     public void UpdateCantEnemies()
     {
         cantEnemies--;
+        addScore = true;
     }
 }
