@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CanvasBehaviour : MonoBehaviour
+public class UIGameCanvas : MonoBehaviour
 {
     public Text enemyCountText;
     public Text livesText;

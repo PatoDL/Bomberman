@@ -13,6 +13,7 @@ public class AllignmentTriggers : MonoBehaviour
         playerController = parent.GetComponent<PlayerController>();
         Physics.IgnoreLayerCollision(8, 9);
         Physics.IgnoreLayerCollision(9, 9);
+        Physics.IgnoreLayerCollision(9, 10);
         Physics.IgnoreLayerCollision(9, 12);
         Physics.IgnoreLayerCollision(9, 11);
         Physics.IgnoreLayerCollision(9, 13);

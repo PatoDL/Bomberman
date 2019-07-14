@@ -10,9 +10,6 @@ public class EnemyPathFinderSystem : AllignmentTriggers
     {
         base.Start();
         e = GetComponentInParent<EnemyBehaviour>();
-        e.lockedWays = new bool[4];
-        for (int i = 0; i < 4; i++)
-            e.lockedWays[i] = false;
     }
 
     void SearchPreferencedPath(string colName)
@@ -22,13 +19,15 @@ public class EnemyPathFinderSystem : AllignmentTriggers
         switch(colName)
         {
             case "ColliderX":
-                if (p.position.x > en.position.x)
+                bool playerOnTheRight = p.position.x > en.position.x;
+                if (playerOnTheRight)
                     e.prefX = (int)PlayerController.Moves.right;
                 else
                     e.prefX = (int)PlayerController.Moves.left;
                 break;
             case "ColliderZ":
-                if (p.position.z > en.position.z)
+                bool playerUp = p.position.z > en.position.z;
+                if (playerUp)
                     e.prefZ = (int)PlayerController.Moves.up;
                 else
                     e.prefZ = (int)PlayerController.Moves.down;

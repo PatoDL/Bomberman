@@ -6,9 +6,7 @@ public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPF;
 
-    public GameObject floor;
     const int cantSpawnPositions = 4;
-    public GameObject pared;
     Vector3[] spawnPositions;
     public int cantEnemiesToSpawn=1;
     public int cantEnemies = 0;

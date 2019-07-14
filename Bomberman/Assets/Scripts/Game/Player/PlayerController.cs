@@ -6,35 +6,27 @@ public class PlayerController : MonoBehaviour
 {
     public enum Moves
     {
-        up,down,left,right
+        up,down,left,right,last
     }
 
     public Vector3 PlayerStartPosition;
 
     public float speed;
-    Vector3 zMovement;
-    Vector3 xMovement;
-    Rigidbody rig;
-    const int cantMoves = 4;
     public bool[] move;
     public int lives = 2;
+
     public delegate void OnPlayerHitted();
     public static OnPlayerHitted PlayerHit;
 
     void Start()
     {
         PlayerHit += PlayerHitBehaviour;
-        zMovement = new Vector3(0, 0, 1);
-        xMovement = new Vector3(1, 0, 0);
-        rig = GetComponent<Rigidbody>();
-        move = new bool[cantMoves];
+        move = new bool[(int)Moves.last];
 
-        for(int i=0;i<cantMoves;i++)
+        for(int i=0;i< (int)Moves.last; i++)
         {
             move[i] = true;
         }
-
-        speed *= Time.deltaTime;
     }
 
     void OnDestroy()
@@ -65,7 +57,7 @@ public class PlayerController : MonoBehaviour
             ver = 0;
         }
        
-        transform.position += new Vector3(hor, 0, ver)*speed;
+        transform.position += new Vector3(hor, 0, ver)*speed*Time.deltaTime;
         if((Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Space)))
         {
             BombManager.instance.SetBomb(transform.position);

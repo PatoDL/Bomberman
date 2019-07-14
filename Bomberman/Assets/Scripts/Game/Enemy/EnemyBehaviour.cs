@@ -25,8 +25,12 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Start()
     {
-        m = Random.Range(0, 4);
+        m = Random.Range(0, (int)PlayerController.Moves.last);
         player = GameObject.Find("Player");
+        
+        lockedWays = new bool[(int)PlayerController.Moves.last];
+        for (int i = 0; i < (int)PlayerController.Moves.last; i++)
+            lockedWays[i] = false;
     }
 
     void Update()
@@ -79,6 +83,23 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
+    Vector3 DirectionSelector(PlayerController.Moves m)
+    {
+        switch (m)
+        {
+            case PlayerController.Moves.up:
+                return new Vector3(0, 0, 1);
+            case PlayerController.Moves.down:
+                return new Vector3(0, 0, -1);
+            case PlayerController.Moves.left:
+                return new Vector3(-1, 0, 0);
+            case PlayerController.Moves.right:
+                return new Vector3(1, 0, 0);
+            default:
+                return new Vector3(0, 0, 1);
+        }
+    }
+
     void CheckLives()
     {
         data.lives--;
@@ -111,23 +132,6 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    Vector3 DirectionSelector(PlayerController.Moves m)
-    {
-        switch (m)
-        {
-            case PlayerController.Moves.up:
-                return new Vector3(0, 0, 1);
-            case PlayerController.Moves.down:
-                return new Vector3(0, 0, -1);
-            case PlayerController.Moves.left:
-                return new Vector3(-1, 0, 0);
-            case PlayerController.Moves.right:
-                return new Vector3(1, 0, 0);
-            default:
-                return new Vector3(0, 0, 1);
-        }
-    }
-
     void ChangePath()
     {
         bool hasToChangePath = lockedWays[m];
@@ -147,7 +151,7 @@ public class EnemyBehaviour : MonoBehaviour
     int CheckForUnlockedPaths(PlayerController.Moves mLocked)
     {
         int path = (int)mLocked;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < (int)PlayerController.Moves.last; i++)
         {
             if (!lockedWays[i])
             {

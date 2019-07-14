@@ -37,11 +37,6 @@ public class BombManager : MonoBehaviour
         BombBehaviour.ExplodeBomb -= UpdateBombAmount;
     }
 
-    void Update()
-    {
-        
-    }
-
     public void SetBomb(Vector3 pos)
     {
         if (bombSetCount < totalBombAmount)

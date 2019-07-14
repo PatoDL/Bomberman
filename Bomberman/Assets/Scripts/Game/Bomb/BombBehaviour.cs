@@ -50,7 +50,6 @@ public class BombBehaviour : MonoBehaviour
 
     void Explode()
     {
-        Debug.Log("explita");
         GameObject e1 = Instantiate(explosionPF);
         e1.name = "Explosion";
         e1.transform.position = new Vector3(transform.position.x - explosionPF.transform.localScale.x, transform.position.y, transform.position.z);

@@ -31,13 +31,14 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
 
     public void GoToMenu()
     {
-        SceneManager.LoadScene(0);
+        LoaderManager.Get().LoadScene(0);
         savedLevelThatComesFrom = actualLevelData.level;
     }
 
     public void GoToNextLevel()
     {
         LoaderManager.Get().LoadScene(actualLevelData.nextLevel);
+        savedLevelThatComesFrom = actualLevelData.level;
     }
 
     public void QuitGame()

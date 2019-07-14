@@ -11,11 +11,6 @@ public class LoaderManager : MonoBehaviourSingleton<LoaderManager>
     public float minTimeToLoad = 2;
     public UILoadingScreen uiLoadingScreen;
     
-    void Start()
-    {
-    
-    }
-    
     void FakeLoad()
     {
         uiLoadingScreen.SetVisible(true);
