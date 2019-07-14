@@ -13,7 +13,7 @@ public class BombPositionTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.name=="NormalWall")
+        if(col.gameObject.tag=="NormalWall")
         {
             float xDifference = col.transform.position.x - transform.position.x;
             float zDifference = col.transform.position.z - transform.position.z;

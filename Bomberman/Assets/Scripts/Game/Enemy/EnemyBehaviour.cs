@@ -4,42 +4,73 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    //public delegate void EnemyKilled();
-    //public static EnemyKilled OnEnemyKill; 
+    public delegate void OnEnemyKill();
+    public static OnEnemyKill KillEnemy;
+
     public enum State
     {
-        idle, chase
+        idle
     }
 
     public EnemyData data;
-    public GameObject explosionPF;
-    public bool randomize = false;
+    public bool pacmanmode = false;
 
-    public int wallCollisionX = 0;
-    public int wallCollisionZ = 0;
+    public bool ignorePathFinder = false;
+    float ignoreTimer = 0f;
+    public int prefX;
+    public int prefZ;
+    public bool[] lockedWays;
+    public GameObject player;
     public int m;
-
-    EnemySpawner eS;
 
     void Start()
     {
-        m = Random.Range(0, 3);
-        eS = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
+        m = Random.Range(0, 4);
+        player = GameObject.Find("Player");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(data.lives<=0)
+        if(ignorePathFinder)
         {
-            eS.UpdateCantEnemies();
-            Destroy(this.gameObject);
+            IgnorePathFinder(3f);
         }
+        else
+            ChangePath();
         data.move = (PlayerController.Moves)m;
-        move();
+        Move();
     }
 
-    void move()
+    void IgnorePathFinder(float ignoreDuration)
+    {
+        ignoreTimer += Time.deltaTime;
+        if (ignoreTimer > ignoreDuration)
+        {
+            ignorePathFinder = false;
+            ignoreTimer = 0f;
+        }
+    }
+
+    public void InverseMovement()
+    {
+        switch (m)
+        {
+        case (int)PlayerController.Moves.up:
+            m = (int)PlayerController.Moves.down;
+            break;
+        case (int)PlayerController.Moves.down:
+            m = (int)PlayerController.Moves.up;
+            break;
+        case (int)PlayerController.Moves.right:
+            m = (int)PlayerController.Moves.left;
+            break;
+        case (int)PlayerController.Moves.left:
+            m = (int)PlayerController.Moves.right;
+            break;
+        }
+    }
+
+    void Move()
     {
         if (data.state == State.idle)
         {
@@ -48,11 +79,35 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
+    void CheckLives()
+    {
+        data.lives--;
+        if (data.lives <= 0)
+        {
+            KillEnemy();
+            Destroy(this.gameObject);
+        }
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "Bomb")
+        {
+            InverseMovement();
+            ignorePathFinder = true;
+        }
+        else if(col.gameObject.name == "Player" && pacmanmode)
+        {
+            CheckLives();
+        }
+        transform.rotation = Quaternion.identity;
+    }
+
     void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.name=="Explosion")
+        if(col.gameObject.tag == "Explosion")
         {
-            data.lives--;
+            CheckLives();
         }
     }
 
@@ -71,5 +126,55 @@ public class EnemyBehaviour : MonoBehaviour
             default:
                 return new Vector3(0, 0, 1);
         }
+    }
+
+    void ChangePath()
+    {
+        bool hasToChangePath = lockedWays[m];
+        if (!lockedWays[SetPreferencedPath()])
+        {
+            m = SetPreferencedPath();
+        }
+        else if (hasToChangePath)
+        {
+            m = CheckForUnlockedPaths((PlayerController.Moves)m);
+        }
+
+        if (pacmanmode)
+            InverseMovement();
+    }
+
+    int CheckForUnlockedPaths(PlayerController.Moves mLocked)
+    {
+        int path = (int)mLocked;
+        for (int i = 0; i < 4; i++)
+        {
+            if (!lockedWays[i])
+            {
+                path = i;
+            }
+        }
+        return path;
+    }
+
+    int SetPreferencedPath()
+    {
+        Transform en = transform;
+        Transform p = player.transform;
+        int chosenPref;
+
+        if (Mathf.Abs((int)(p.position.x - en.position.x)) > Mathf.Abs((int)(p.position.z - en.position.z)))
+            chosenPref = prefX;
+        else if (Mathf.Abs((int)(p.position.x - en.position.x)) < Mathf.Abs((int)(p.position.z - en.position.z)))
+            chosenPref = prefZ;
+        else
+            chosenPref = prefZ;
+
+        if (lockedWays[prefX])
+            chosenPref = prefZ;
+        else if (lockedWays[prefZ])
+            chosenPref = prefX;
+
+        return chosenPref;
     }
 }

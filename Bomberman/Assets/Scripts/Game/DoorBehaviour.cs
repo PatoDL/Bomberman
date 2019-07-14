@@ -5,13 +5,14 @@ using UnityEngine;
 public class DoorBehaviour : MonoBehaviour
 {
     public bool able = false;
-    public bool exit = false;
 
-    void OnTriggerEnter(Collider col)
+    void Start()
     {
-        if(able && col.gameObject.name=="Player")
-        {
-            exit = true;
-        }
+        EnemySpawner.ActivateDoor = ActivateDoor;
+    }
+
+    void ActivateDoor()
+    {
+        able = true;
     }
 }

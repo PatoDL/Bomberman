@@ -9,9 +9,6 @@ public class PlayerController : MonoBehaviour
         up,down,left,right
     }
 
-    public GameObject bombPF;
-    public GameManager explosionPF;
-
     public Vector3 PlayerStartPosition;
 
     public float speed;
@@ -21,14 +18,12 @@ public class PlayerController : MonoBehaviour
     const int cantMoves = 4;
     public bool[] move;
     public int lives = 2;
-
-    public bool hittedByBomb = false;
-    public bool hittedByEnemy = false;
+    public delegate void OnPlayerHitted();
+    public static OnPlayerHitted PlayerHit;
 
     void Start()
     {
-        PlayerStartPosition = new Vector3(1350.1f, 63.03f, 1447.1f);
-        speed = 200.0f * Time.deltaTime;
+        PlayerHit += PlayerHitBehaviour;
         zMovement = new Vector3(0, 0, 1);
         xMovement = new Vector3(1, 0, 0);
         rig = GetComponent<Rigidbody>();
@@ -38,72 +33,87 @@ public class PlayerController : MonoBehaviour
         {
             move[i] = true;
         }
+
+        speed *= Time.deltaTime;
+    }
+
+    void OnDestroy()
+    {
+        PlayerHit -= PlayerHitBehaviour;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.UpArrow) && move[(int)Moves.up])
+        float hor = Input.GetAxisRaw("Horizontal");
+        float ver = Input.GetAxisRaw("Vertical");
+
+        if(!move[(int)Moves.right] && hor>0)
         {
-            transform.position += zMovement * speed;
-            manageXInput(false);
+            hor = 0;
         }
-        if (Input.GetKey(KeyCode.DownArrow) && move[(int)Moves.down])
+        if(!move[(int)Moves.left] && hor < 0)
         {
-            transform.position += zMovement * -speed;
-            manageXInput(false);
+            hor = 0;
         }
-        if (Input.GetKey(KeyCode.LeftArrow) && move[(int)Moves.left])
+        if(!move[(int)Moves.up] && ver > 0)
         {
-            transform.position += xMovement * -speed;
-            manageZInput(false);
+            ver = 0;
         }
-        if (Input.GetKey(KeyCode.RightArrow) && move[(int)Moves.right])
+        if(!move[(int)Moves.down] && ver < 0)
         {
-            transform.position += xMovement * speed;
-            manageZInput(false);
+            ver = 0;
         }
-        if((Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Space))&&!BombBehaviour.GetInstanciated())
+       
+        transform.position += new Vector3(hor, 0, ver)*speed;
+        if((Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Space)))
         {
-            GameObject b = Instantiate(bombPF);
-            b.name = "Bomb";
-            b.transform.position = transform.position;
-        }
-        if(Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            manageZInput(true);
-        }
-        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            manageXInput(true);
+            BombManager.instance.SetBomb(transform.position);
         }
     }
 
-    void manageXInput(bool b)
+    public int GetLives()
     {
-        move[(int)Moves.right] = b;
-        move[(int)Moves.left] = b;
+        return lives;
     }
 
-    void manageZInput(bool b)
+    void PlayerHitBehaviour()
     {
-        move[(int)Moves.up] = b;
-        move[(int)Moves.down] = b;
+        lives--;
+        if (lives > 0)
+        {
+            transform.position = PlayerStartPosition;
+        }
+        else
+        {
+            LevelManager.Get().GoToNextLevel();
+        }
     }
 
     void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.name=="Enemy" && !hittedByEnemy)
+        if(col.gameObject.tag == "Enemy" && !EnemySpawner.pacmanmode)
         {
-            hittedByEnemy = true;
+            PlayerHit();
+        }
+        else if(col.gameObject.tag=="Item")
+        {
+            col.gameObject.GetComponent<ItemBehaviour>().ActivateEffect();
         }
     }
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.name == "Explosion" && !hittedByBomb)
+        if (col.gameObject.tag == "Explosion")
         {
-            hittedByBomb = true;
+            PlayerHit();
+        }
+        else if (col.gameObject.tag == "Door")
+        {
+            if (col.GetComponent<DoorBehaviour>().able)
+            {
+                LevelManager.Get().GoToNextLevel();
+            }
         }
     }
 }

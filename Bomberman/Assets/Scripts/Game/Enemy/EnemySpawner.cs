@@ -5,32 +5,56 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPF;
-    GameObject floor;
-    const int cantSpawnPositions =4;
+
+    public GameObject floor;
+    const int cantSpawnPositions = 4;
     public GameObject pared;
     Vector3[] spawnPositions;
     public int cantEnemiesToSpawn=1;
     public int cantEnemies = 0;
     float timer = 0f;
-    public bool addScore=false;
-    public int scoreToAdd = 50;
+
+    List<GameObject> enemies = new List<GameObject>();
+
+    public static bool pacmanmode = false;
+    float pacmanmodeTimer = 0f;
+    public float pacmanmodeTimeLimit;
+
+    public float startPositionxz;
+
+    public delegate void OnDoorActivation();
+    public static OnDoorActivation ActivateDoor;
 
     void Start()
     {
-        floor = GameObject.Find("FloorController").transform.Find("Floor").gameObject;
-        spawnPositions = new Vector3[cantSpawnPositions];
-        spawnPositions[0] = new Vector3(pared.transform.localScale.x / 2 * 3, enemyPF.transform.localScale.y/2, pared.transform.localScale.x / 2 * 3);
-        spawnPositions[1] = new Vector3(pared.transform.localScale.x / 2 * 3, enemyPF.transform.localScale.y / 2, floor.transform.localScale.x - pared.transform.localScale.z / 2);
-        spawnPositions[2] = new Vector3(floor.transform.localScale.x - pared.transform.localScale.z / 2, enemyPF.transform.localScale.y / 2, floor.transform.localScale.x - pared.transform.localScale.z / 2);
-        spawnPositions[3] = new Vector3(floor.transform.localScale.x - pared.transform.localScale.x / 2, enemyPF.transform.localScale.y / 2, pared.transform.localScale.x / 2 * 3);
-        //EnemyBehaviour.OnEnemyKill = UpdateCantEnemies;
+        Physics.IgnoreLayerCollision(8, 8);
+        Physics.IgnoreLayerCollision(8, 13);
+        Physics.IgnoreLayerCollision(8, 14);
+        cantEnemies = 0;
+        EnemyBehaviour.KillEnemy += UpdateCantEnemies;
+        ItemBehaviour.ActivatePacmanMode = ActivatePacmanMode;
+        StartSpawnPos();       
     }
 
-    // Update is called once per frame
+    void OnDestroy()
+    {
+        EnemyBehaviour.KillEnemy -= UpdateCantEnemies;
+    }
+
+    void StartSpawnPos()
+    {
+        spawnPositions = new Vector3[cantSpawnPositions];
+        spawnPositions[0] = new Vector3(-startPositionxz, 1.3f, -startPositionxz);
+        spawnPositions[1] = new Vector3(-startPositionxz, 1.3f, startPositionxz);
+        spawnPositions[2] = new Vector3(startPositionxz, 1.3f, startPositionxz);
+        spawnPositions[3] = new Vector3(startPositionxz, 1.3f, -startPositionxz);
+    }
+
     void Update()
     {
         timer += Time.deltaTime;
-        if(timer>5f && cantEnemiesToSpawn>0)
+        bool spawnNewEnemy = timer > 5f && cantEnemiesToSpawn > 0;
+        if (spawnNewEnemy)
         {
             cantEnemiesToSpawn--;
             cantEnemies++;
@@ -38,14 +62,63 @@ public class EnemySpawner : MonoBehaviour
             GameObject e = Instantiate(enemyPF);
             e.gameObject.name = "Enemy";
             e.transform.position = spawnPositions[Random.Range(0, cantSpawnPositions)];
-            e.GetComponent<EnemyBehaviour>().data.move = (PlayerController.Moves)Random.Range(0, 4);
+            enemies.Add(e);
         }
+        if(pacmanmode)
+        {
+            pacmanmodeTimer += Time.deltaTime;
+            if(pacmanmodeTimer>pacmanmodeTimeLimit)
+            {
+                pacmanmode = false;
+                pacmanmodeTimer = 0f;
+                for(int i=0;i<enemies.Count;i++)
+                {
+                    if (enemies[i])
+                    {
+                        enemies[i].GetComponent<EnemyBehaviour>().pacmanmode = false;
+                        enemies[i].GetComponent<MeshRenderer>().material.color = Color.white;
+                    }
+                    else
+                    {
+                        enemies.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+    }
 
+    public int GetCantEnemies()
+    {
+        return cantEnemies;
     }
 
     public void UpdateCantEnemies()
     {
         cantEnemies--;
-        addScore = true;
+        bool noMoreEnemies = cantEnemies <= 0 && cantEnemies == cantEnemiesToSpawn;
+        if (noMoreEnemies)
+        {
+            ActivateDoor();
+        }
+    }
+
+    void ActivatePacmanMode()
+    {
+        pacmanmode = true;
+        pacmanmodeTimer = 0f;
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i])
+            {
+                enemies[i].GetComponent<EnemyBehaviour>().pacmanmode = true;
+                enemies[i].GetComponent<MeshRenderer>().material.color = Color.red;
+            }
+            else
+            {
+                enemies.RemoveAt(i);
+                i--;
+            }
+        }
     }
 }

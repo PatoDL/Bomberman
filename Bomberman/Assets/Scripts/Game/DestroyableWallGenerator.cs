@@ -4,46 +4,57 @@ using UnityEngine;
 
 public class DestroyableWallGenerator : MonoBehaviour
 {
-    public GameObject floorController;
-    GameObject floor;
-    GameObject destroyableWallsParent;
-    public GameObject destroyableWall;
-    public GameObject DoorPF;
+    public GameObject destroyableWallPF;
+    public GameObject doorPF;
+    public GameObject floor;
+    public GameObject destroyableWallsParent;
     bool doorLocated = false;
 
     void Start()
     {
-        floor = floorController.transform.Find("Floor").gameObject;
-        MakeDestroyableWalls();
+        GenerateDestroyableWalls();
     }
 
-    void MakeDestroyableWalls()
+    void GenerateDestroyableWalls()
     {
-        destroyableWallsParent = new GameObject("DestroyableWallsParent");
         int destroyableWallsCount = 0;
-        for (int x = (int)floorController.transform.position.x + 1; x < floor.transform.localScale.x / destroyableWall.transform.localScale.x; x++)
+        float xLimit = floor.transform.localScale.x / destroyableWallPF.transform.localScale.x / 2;
+        float zLimit = floor.transform.localScale.z / destroyableWallPF.transform.localScale.z / 2;
+        int startLimit = -12;
+
+        for (int x = startLimit; x < xLimit; x++)
         {
-            for (int z = (int)floorController.transform.position.x + 1; z < floor.transform.localScale.z / destroyableWall.transform.localScale.z; z++)
+            for (int z = startLimit; z < zLimit; z++)
             {
                 int r = Random.Range(0, 10);
-                if ((x % 2 != 0 || (x % 2 == 0 && z % 2 != 0))
-                    && r > 7 && destroyableWallsCount < 100 && (x!=13 || z!=14)
-                    && (x>5||z>5) && (x< 20 || z<20) && (x >5 || z <20) && (x < 20 || z > 5))
+
+                bool notCentre = !(x <= 1 && x>=-1 && z >= -1 && z<=1);
+
+                bool notInNormalWallsPosition = !(z % 2 != 0 && x % 2 != 0);
+
+                bool notInLimits = !((x >= xLimit - 1 && z >= zLimit - 1) || (x == startLimit && z == startLimit) ||
+                                    (x >= xLimit - 1 && z == startLimit) || (x == startLimit && z >= zLimit - 1));
+
+                if (r < 2 && destroyableWallsCount < 200)
                 {
-                    GameObject nw = Instantiate(destroyableWall);
-                    
-                    nw.transform.position = new Vector3(x * destroyableWall.transform.localScale.x + destroyableWall.transform.localScale.x / 2,
-                        destroyableWall.transform.localScale.y/2, z * destroyableWall.transform.localScale.x + destroyableWall.transform.localScale.x / 2);
-                    destroyableWallsCount++;
-                    nw.tag = "DestroyableWall";
-                    nw.name = "DestroyableWall";
-                    nw.transform.SetParent(destroyableWallsParent.transform);
-                    if(!doorLocated)
+                    if (notCentre && notInNormalWallsPosition && notInLimits)
                     {
-                        GameObject d = Instantiate(DoorPF);
-                        d.gameObject.name = "ExitDoor";
-                        d.transform.position = new Vector3(nw.transform.position.x, d.transform.localScale.y / 2, nw.transform.position.z);
-                        doorLocated = true;
+                        GameObject dw = Instantiate(destroyableWallPF);
+
+                        dw.transform.position = new Vector3(x * destroyableWallPF.transform.localScale.x,
+                            destroyableWallPF.transform.localScale.y, z * destroyableWallPF.transform.localScale.z);
+                        destroyableWallsCount++;
+                        dw.tag = "DestroyableWall";
+                        dw.name = "DestroyableWall";
+                        dw.transform.SetParent(destroyableWallsParent.transform);
+                        if (!doorLocated)
+                        {
+                            GameObject d = Instantiate(doorPF);
+                            d.gameObject.name = "ExitDoor";
+                            d.transform.position = new Vector3(dw.transform.position.x, d.transform.position.y,
+                                dw.transform.position.z);
+                            doorLocated = true;
+                        }
                     }
                 }
             }

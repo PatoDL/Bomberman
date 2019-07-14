@@ -8,11 +8,12 @@ public class ExplosionBehaviour : MonoBehaviour
     private void Start()
     {
         timer = 0f;
+        Physics.IgnoreLayerCollision(9, 10);
     }
 
     private void Update()
     {
-        if (timer > 0f)
+        if (timer > 1f)
         {
             Destroy(this.gameObject);
         }
@@ -21,10 +22,6 @@ public class ExplosionBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.name=="DestroyableWall")
-        {
-            Destroy(col.gameObject);
-        }
         Destroy(this.gameObject);
     }
 

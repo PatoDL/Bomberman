@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class BombBehaviour : MonoBehaviour
 {
+    public delegate void OnBombExplode();
+    public static OnBombExplode ExplodeBomb;
+
     float timer;
     bool activeTimer;
-    static bool instanciated;
     public GameObject explosionPF;
     const int cantExplosions=4;
 
     void Start()
     {
         timer = 0.0f;
-        instanciated = true;
         activeTimer = false;
+        ExplodeBomb += Explode;
+    }
+
+    void OnDestroy()
+    {
+        ExplodeBomb -= Explode;
     }
 
     void Update()
@@ -24,16 +31,10 @@ public class BombBehaviour : MonoBehaviour
             timer += Time.deltaTime;
             if (timer > 2.5f)
             {
-                instanciated = false;
-                Explode();
+                ExplodeBomb();
                 Destroy(this.gameObject);
             }
         }
-    }
-
-    public static bool GetInstanciated()
-    {
-        return instanciated;
     }
 
     private void OnTriggerExit(Collider col)
@@ -49,6 +50,7 @@ public class BombBehaviour : MonoBehaviour
 
     void Explode()
     {
+        Debug.Log("explita");
         GameObject e1 = Instantiate(explosionPF);
         e1.name = "Explosion";
         e1.transform.position = new Vector3(transform.position.x - explosionPF.transform.localScale.x, transform.position.y, transform.position.z);

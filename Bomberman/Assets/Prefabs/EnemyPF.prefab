@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5129901983614592883}
   - component: {fileID: 1014315668398597873}
-  - component: {fileID: 9046835444580064691}
-  m_Layer: 0
+  - component: {fileID: 4609070259937290638}
+  m_Layer: 9
   m_Name: ColliderZ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,9 +43,9 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 1, z: 2}
+  m_Size: {x: 0.6, y: 1, z: 1.8}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9046835444580064691
+--- !u!114 &4609070259937290638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,10 +54,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2064193831052907281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71ead108dc0b42d46957490ee769fe7f, type: 3}
+  m_Script: {fileID: 11500000, guid: c61d6a19b80c7884485640e7aedbd8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paredes: []
+  parent: {fileID: 0}
 --- !u!1 &3945612456188466128
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,8 +68,8 @@ GameObject:
   m_Component:
   - component: {fileID: 483486132969392921}
   - component: {fileID: 3639276773980335522}
-  - component: {fileID: 8310656413685781168}
-  m_Layer: 0
+  - component: {fileID: 2691405768325629065}
+  m_Layer: 9
   m_Name: ColliderX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,9 +101,9 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1, z: 0.8}
+  m_Size: {x: 1.8, y: 1, z: 0.6}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8310656413685781168
+--- !u!114 &2691405768325629065
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,10 +112,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3945612456188466128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71ead108dc0b42d46957490ee769fe7f, type: 3}
+  m_Script: {fileID: 11500000, guid: c61d6a19b80c7884485640e7aedbd8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paredes: []
+  parent: {fileID: 0}
 --- !u!1 &7293652469287909769
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,9 +130,9 @@ GameObject:
   - component: {fileID: 2283969067924154480}
   - component: {fileID: 4247175884228345304}
   - component: {fileID: 6270932541861671973}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyPF
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 7293652469287909769}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 80, y: 80, z: 80}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 483486132969392921}
   - {fileID: 5129901983614592883}
@@ -211,15 +211,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    lives: 3
+    lives: 1
     direction: {x: 1, y: 0, z: 0}
     move: 3
-    speed: 100
+    speed: 1
     state: 0
-  explosionPF: {fileID: 0}
-  randomize: 0
-  wallCollisionX: 0
-  wallCollisionZ: 0
+  pacmanmode: 0
+  ignorePathFinder: 0
+  prefX: 0
+  prefZ: 0
+  lockedWays: 
+  player: {fileID: 0}
   m: 0
 --- !u!54 &4247175884228345304
 Rigidbody:
@@ -229,9 +231,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7293652469287909769}
   serializedVersion: 2
-  m_Mass: 10000
-  m_Drag: 10000
-  m_AngularDrag: 10000
+  m_Mass: 10
+  m_Drag: 2
+  m_AngularDrag: 2
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0

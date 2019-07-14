@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7253451925299665902
+--- !u!1 &7317287476288179077
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4701751754531581079}
-  - component: {fileID: 7055518711808219226}
-  - component: {fileID: 4981026239637863646}
-  - component: {fileID: 6827053240512586437}
-  - component: {fileID: 7532743557663528598}
-  m_Layer: 14
-  m_Name: DoorPF
-  m_TagString: Door
+  - component: {fileID: 7317287476288411557}
+  - component: {fileID: 7317287476289181573}
+  - component: {fileID: 7317287476290180421}
+  - component: {fileID: 803359189254583098}
+  - component: {fileID: 1330504477857381630}
+  m_Layer: 13
+  m_Name: PacmanItemPF
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4701751754531581079
+--- !u!4 &7317287476288411557
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253451925299665902}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.2, z: 0.8}
+  m_GameObject: {fileID: 7317287476288179077}
+  m_LocalRotation: {x: 0.33643553, y: -0.61619025, z: -0.33873713, w: 0.6264008}
+  m_LocalPosition: {x: 0, y: 0.99993914, z: -0.00000843154}
+  m_LocalScale: {x: 0.05496368, y: 0.05496368, z: 0.05496368}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7055518711808219226
+  m_LocalEulerAnglesHint: {x: 0.231, y: -89.184006, z: -57.034004}
+--- !u!33 &7317287476289181573
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253451925299665902}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4981026239637863646
+  m_GameObject: {fileID: 7317287476288179077}
+  m_Mesh: {fileID: 4300000, guid: b1d285594f1721e46929aad1fe92e360, type: 3}
+--- !u!23 &7317287476290180421
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253451925299665902}
+  m_GameObject: {fileID: 7317287476288179077}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 885b47320270d6848af71feaeaf8f098, type: 2}
+  - {fileID: 2100000, guid: b8fcbf8ca886c0d46a92f2b261e6c595, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,29 +79,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &6827053240512586437
-BoxCollider:
+--- !u!135 &803359189254583098
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253451925299665902}
+  m_GameObject: {fileID: 7317287476288179077}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 25, z: 1}
-  m_Center: {x: 0, y: 12.5, z: 0}
---- !u!114 &7532743557663528598
+  m_Radius: 5.904899
+  m_Center: {x: -0.0000014305115, y: 0, z: -0.2733016}
+--- !u!114 &1330504477857381630
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7253451925299665902}
+  m_GameObject: {fileID: 7317287476288179077}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b101d4c5ac1af8c4aadf718229904f73, type: 3}
+  m_Script: {fileID: 11500000, guid: 072967063d7cd1c4aa1cea2fac814786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  able: 0
+  type: 0

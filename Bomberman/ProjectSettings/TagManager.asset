@@ -6,6 +6,11 @@ TagManager:
   tags:
   - NormalWall
   - DestroyableWall
+  - Bomb
+  - Enemy
+  - Item
+  - Explosion
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -15,13 +20,13 @@ TagManager:
   - UI
   - 
   - 
-  - PostProcessing
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - EnemyLayer
+  - ColliderLayer
+  - ExplosionLayer
+  - BombLayer
+  - PlayerLayer
+  - ItemLayer
+  - DoorLayer
   - 
   - 
   - 
